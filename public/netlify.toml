@@ -1,0 +1,2 @@
+# Redirect to bypass CORS
+/api/*  https://itxperts.co.in/blog/wp-json/:splat  200
