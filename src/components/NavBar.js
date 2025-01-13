@@ -6,19 +6,14 @@ import axios from 'axios';
 const Nav = styled.nav`
   background: #fff;
   border-bottom: 1px solid #ddd;
-  padding: 5px 15px;
+  padding: 10px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: sticky;
   top: 0;
   z-index: 1000;
-  transition: all 0.3s ease-in-out;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-  &:hover {
-    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.2);
-  }
 `;
 
 const NavLinksContainer = styled.div`
@@ -26,7 +21,6 @@ const NavLinksContainer = styled.div`
   align-items: center;
   overflow-x: auto;
   white-space: nowrap;
-  margin-left: 30px; /* Added margin for spacing between branding and nav items */
   scrollbar-width: none; /* Hide scrollbar in Firefox */
   -ms-overflow-style: none; /* Hide scrollbar in IE/Edge */
   &::-webkit-scrollbar {
@@ -37,21 +31,51 @@ const NavLinksContainer = styled.div`
 const NavLinks = styled.div`
   display: flex;
   align-items: center;
+  gap: 10px; /* Reduced gap between menu items */
 
   a {
-    margin-right: 20px; /* Increased the gap between each nav item */
     text-decoration: none;
     color: #333;
     font-weight: bold;
-    font-size: 15px;
-    padding: 8px 16px;
+    font-size: 14px;
+    padding: 8px 12px;
+    position: relative;
     transition: color 0.3s, background-color 0.3s;
-  }
 
-  a:hover {
-    color: #fff;
-    background-color: #0073e6;
-    border-radius: 4px;
+    &:hover {
+      color: #0073e6;
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background-color: #0073e6;
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    &:hover:before {
+      width: 100%;
+    }
+  }
+`;
+
+const Branding = styled.div`
+  margin-right: 30px; /* Space between branding and navigation */
+  a {
+    text-decoration: none;
+    color: #000;
+    font-size: 24px;
+    font-weight: bold;
+    transition: color 0.3s;
+
+    &:hover {
+      color: #0073e6;
+    }
   }
 `;
 
@@ -76,11 +100,9 @@ const NavBar = () => {
 
   return (
     <Nav>
-      <div>
-        <Link to="/" style={{ textDecoration: 'none', color: '#000', fontSize: '24px', fontWeight: 'bold' }}>
-          Itxperts
-        </Link>
-      </div>
+      <Branding>
+        <Link to="/">Itxperts</Link>
+      </Branding>
       <NavLinksContainer>
         <NavLinks>
           {categories.map((category) => (

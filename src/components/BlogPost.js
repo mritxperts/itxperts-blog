@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { FaRegFileAlt } from 'react-icons/fa'; // Importing an icon from React Icons 
+import { FaRegFileAlt, FaFacebook, FaTwitter, FaLinkedin, FaWhatsapp } from 'react-icons/fa'; // Importing icons
 import AdSenseAd from './AdSenseAd';
+
 const BlogPostContainer = styled.div`
   display: flex;
   gap: 30px;
@@ -53,6 +54,34 @@ const PostTitleItem = styled.li`
   }
 `;
 
+const PostMetadata = styled.div`
+  margin: 15px 0;
+  font-size: 14px;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+`;
+
+const ShareIcons = styled.div`
+  display: flex;
+  gap: 10px;
+
+  a {
+    color: #555;
+    transition: color 0.3s;
+
+    &:hover {
+      color: #0073e6;
+    }
+
+    svg {
+      font-size: 20px;
+    }
+  }
+`;
+
 const BlogPost = () => {
   const { slug } = useParams(); // Get the post slug from the URL
   const [post, setPost] = useState(null);
@@ -62,8 +91,10 @@ const BlogPost = () => {
   useEffect(() => {
     const fetchPostData = async () => {
       try {
-        // Fetch the current post
-        const postResponse = await axios.get(`https://itxperts.co.in/blog/wp-json/wp/v2/posts?slug=${slug}`);
+        // Fetch the current post with _embed to get author details
+        const postResponse = await axios.get(
+          `https://itxperts.co.in/blog/wp-json/wp/v2/posts?slug=${slug}&_embed=true`
+        );
         setPost(postResponse.data[0]); // Since the response returns an array
 
         // Fetch posts from the same category
@@ -86,16 +117,64 @@ const BlogPost = () => {
     return <p>Loading...</p>;
   }
 
+  const formattedDate = new Date(post.date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  const author = post._embedded?.author?.[0]?.name || 'Unknown Author';
+
   return (
     <BlogPostContainer>
       {/* Main Content */}
       <MainContent>
         <h1>{post.title.rendered}</h1>
+
+        {/* Author, Date/Time, and Share Icons */}
+        <PostMetadata>
+          <span>By {author}</span>
+          <span>{formattedDate}</span>
+          <ShareIcons>
+            <a
+              href={`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Share on Facebook"
+            >
+              <FaFacebook />
+            </a>
+            <a
+              href={`https://twitter.com/intent/tweet?url=${window.location.href}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Share on Twitter"
+            >
+              <FaTwitter />
+            </a>
+            <a
+              href={`https://www.linkedin.com/shareArticle?url=${window.location.href}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Share on LinkedIn"
+            >
+              <FaLinkedin />
+            </a>
+            <a
+              href={`https://api.whatsapp.com/send?text=${window.location.href}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Share on WhatsApp"
+            >
+              <FaWhatsapp />
+            </a>
+          </ShareIcons>
+        </PostMetadata>
+
         <div dangerouslySetInnerHTML={{ __html: post.content.rendered }} />
-         {/* Add AdSense Ad */}
-         <AdSenseAd client="ca-pub-1668326870639724" slot="7338125119" />
-      
-        </MainContent>
+        {/* Add AdSense Ad */}
+        <AdSenseAd client="ca-pub-1668326870639724" slot="7338125119" />
+      </MainContent>
 
       {/* Sidebar */}
       <Sidebar>

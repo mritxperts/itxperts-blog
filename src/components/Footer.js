@@ -13,9 +13,9 @@ const FooterContainer = styled.footer`
 const Footer = () => {
   return (
     <FooterContainer>
-      <p>© {new Date().getFullYear()} React Blog. All rights reserved.</p>
+      <p>© {new Date().getFullYear()} Itxperts. All rights reserved.</p>
       <p>
-        Powered by <a href="https://itxperts.co.in" target="_blank" rel="noopener noreferrer">ITxperts</a>
+        Powered by <a href="https://itxperts.co.in" target="_blank" rel="noopener noreferrer">Itxperts</a>
       </p>
     </FooterContainer>
   );
